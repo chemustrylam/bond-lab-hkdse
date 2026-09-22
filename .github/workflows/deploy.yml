@@ -1,4 +1,3 @@
-
 name: Deploy Bond Lab
 
 on:
@@ -17,30 +16,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get source code
+      - name: Download source code
         uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
 
-      - name: Install packages
+      - name: Install pnpm
+        run: npm install --global pnpm@10.4.1
+
+      - name: Install project packages
         run: pnpm install --frozen-lockfile
 
-      - name: Build website
+      - name: Build game
         run: pnpm exec vite build
 
-      - name: Upload website
+      - name: Upload game
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist/public
 
-      - name: Deploy website
+      - name: Deploy game
         uses: actions/deploy-pages@v4
